@@ -9,6 +9,17 @@
 
 #include "network.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <sys/param.h>
+#include <sys/uio.h>
+#include <unistd.h>
+
 #define BUF_LEN     512                  /* バッファのサイズ */
 #define MAX_KEYWORD	30					 /*キーワードの最大数*/
 
@@ -58,8 +69,6 @@ const char *commands[9][MAX_CMD_LEN] = {
 static int   Init(int argc, char *argv[], char ProxyAddress[], int ProxyPort);
 static int   send_cmd(const char[], char[]);
 static int   ReturnCode_to_ReturnNumber();
-static char* enum2strcmd(ecmd cmd);
-
 
 //*******************************************************************
 //                             関数定義
@@ -192,7 +201,7 @@ void establishConnection(int argc, char *argv[], char cmp_ProxyAddress[]) {
 	printf("-----------------------\n\n");
 }
 
-void expSendCommand(const char mode[], const char cmd[]) {
+void sendCommand(const char mode[], const char cmd[]) {
 
 	// 同じコマンドを繰り返し送った回数
 	int repeat = 0;
@@ -225,6 +234,8 @@ void expSendCommand(const char mode[], const char cmd[]) {
 
 		} while (strcmp(ReturnCode, "command1=") != 0 && strcmp(ReturnCode, "user=") != 0);
 	}
+
+	printf("ReturnCode == %s\n", ReturnCode);
 
 } 
 //-------------------------------------------------------------------
@@ -322,7 +333,7 @@ static int  send_cmd(const char command[], char parameter[]){
     char buf[BUF_LEN];					//サーバ返答
     char WebBuf[BUF_LEN*40];
     int s;                               /* ソケットのためのファイルディスクリプタ */
-    char send_buf[BUF_LEN];              /* サーバに送る HTTP プロトコル用バッファ */
+    char send_buf[BUF_LEN*2];              /* サーバに送る HTTP プロトコル用バッファ */
 
     static char SessionID[100];					//セッションID
     char *SessionIDstart;				//セッションID記入開始位置
@@ -490,17 +501,3 @@ static int  ReturnCode_to_ReturnNumber() {
 		return FAILURE;
 	}
 }
-
-static char* enum2strcmd(ecmd cmd) {
-	int mode;
-	int direction;
-	static char cmd_str[MAX_CMD_LEN];
-
-	mode = cmd / MAX_CMD_LEN;
-	direction = cmd % MAX_CMD_LEN;
-
-	strcpy(cmd_str, commands[mode][direction]);
-
-	return cmd_str;
-}
-

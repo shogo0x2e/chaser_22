@@ -12,9 +12,9 @@ OTHERS  = ./others/
 
 URL     = http://192.168.56.103:8080/CHaserOnline003/user/
 SKRURL	= http://www7019ug.sakura.ne.jp:80/CHaserOnline003/user/
-USERNM  = cool92
+USERNM  = cool91
 PASSWD  = cool
-ROOM    = 4007
+ROOM    = 4008
 
 all: $(PROGRAM)
 
