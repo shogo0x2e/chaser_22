@@ -7,22 +7,49 @@
 //     備考: CHaserOnlineのサンプルプログラムより
 //*********************************************
 
-#include "../others/std_headers.h"
+// 関数動作の正常・異常を判断する際に使用
+#define SUCCESS  -1
+#define FAILURE  -2
 
-// 学校から接続する場合は以下のプロキシを設定
-#ifdef _IN_SCHOOL_
-#define PROXY "proxy.spec.ed.jp"
-#else
-#define PROXY ""
-#endif
+#define MAP_SIZE        61          // 構造体 map_datas における一列の要素数
+#define GR_ARR_SIZE     9           // GetReady に用いる配列の要素数
+#define MAX_CMD_LEN     10          // サーバに送信する最長の String 型コマンド
+#define SENDCMD_MAXLEN  20          // サーバに送信する 「commandN=」を含めた最長コマンド
+                                    // 必要数 17 「commandN=pru0wld」
 
-typedef enum  send_mode_ {
-    SendGetready,
-    SendAction,
-    SendTurnEnd
-} send_mode;
 
+// sendCommand に使用するキーワード
+#define KEY_GETREADY "GetReadyCheck"
+#define KEY_ACTION   "CommandCheck"
+#define KEY_END      "EndCommandCheck"
+
+/**
+ * @brief ReturnNumber に含まれる数値の数を取得する
+ * 
+ * @return int ReturnNumber に含まれる数値の数
+ */
 int  retDataCount();
+
+/**
+ * @brief 取得した周囲情報 (GR情報) を取得する
+ * 
+ * @param copyTo 保存先の配列
+ */
 void copyRawgr(int copyTo[]);
+
+/**
+ * @brief サーバとの接続を確立する
+ * 
+ * @param argc main() の argc
+ * @param argv main() の argv 
+ * @param proxyAddress プロキシ (学校からだったら "proxy.spec.ed.jp")
+ */
 void establishConnection(int argc, char* argv[], char proxyAddress[]);
-void sendCommand(send_mode smode, ecmd cmd);
+
+/**
+ * @brief コマンドをサーバに送信する
+ * 
+ * @param mode KEY_GETREADY, KEY_ACTION, KEY_END のいずれか
+ * @param cmd 送信するコマンド (gr, wu など)
+ */
+void sendCommand(const char mode[], const char cmd[]);

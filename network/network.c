@@ -9,6 +9,17 @@
 
 #include "network.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <sys/param.h>
+#include <sys/uio.h>
+#include <unistd.h>
+
 #define BUF_LEN     512                  /* バッファのサイズ */
 #define MAX_KEYWORD	30					 /*キーワードの最大数*/
 
@@ -58,13 +69,6 @@ const char *commands[9][MAX_CMD_LEN] = {
 static int   Init(int argc, char *argv[], char ProxyAddress[], int ProxyPort);
 static int   send_cmd(const char[], char[]);
 static int   ReturnCode_to_ReturnNumber();
-static char* enum2strcmd(ecmd cmd);
-
-static bool command_isnt_accepted();
-static bool getDataReturned();
-static bool allOutsideDataReturned();
-static bool gameEndDataReturned();
-static bool acceptedNextCmd();
 
 //*******************************************************************
 //                             関数定義
@@ -197,37 +201,43 @@ void establishConnection(int argc, char *argv[], char cmp_ProxyAddress[]) {
 	printf("-----------------------\n\n");
 }
 
-void sendCommand(send_mode smode, ecmd cmd) {
+void sendCommand(const char mode[], const char cmd[]) {
 
-	char  buffer_cmd[SENDCMD_MAXLEN] = "";
+	// 同じコマンドを繰り返し送った回数
+	int repeat = 0;
+	// commandX=YY の X の数値
+	int key_num;
+	// サーバ文字列のバッファ
+	char buf_cmd[MAX_KEYWORD];
 
-	const char *server_keyword[] = {
-		"GetReadyCheck",
-		"CommandCheck",
-		"EndCommandCheck"
-	};
+	if      (strcmp(mode, KEY_GETREADY) == 0) key_num = 1;
+	else if (strcmp(mode, KEY_ACTION)   == 0) key_num = 2;
+	else if (strcmp(mode, KEY_END)      == 0) key_num = 3;
 
-	if (smode != SendTurnEnd) {
+	if (strcmp(mode, KEY_END) != 0) {
 
-		// smode + 1 ... commandN= の N は 1 から数えるため
-		sprintf(buffer_cmd, "command%d=%s", smode + 1, enum2strcmd(cmd));
+		sprintf(buf_cmd, "command%d=%s", key_num, cmd);
 
 		do {
-			send_cmd(server_keyword[smode], buffer_cmd);
-		} while ( command_isnt_accepted() );
+			send_cmd(mode, buf_cmd);
+		} while (strchr(ReturnCode, ',') == NULL && strcmp(ReturnCode, "user=") != 0);
 	}
 	else {
 
 		do {
 			// server_keyword[smode] は "EndCommandCheck" にも置き換えられる
-			send_cmd(server_keyword[smode], "command3=%23");
-			if ( gameEndDataReturned() ) exit(EXIT_SUCCESS); //ゲーム終了
+			send_cmd(mode, "command3=%23");
 
-		} while ( ! acceptedNextCmd() );
+			if (strcmp(ReturnCode, "user=") == 0 || repeat++ > 5) {
+				exit(EXIT_SUCCESS); //ゲーム終了
+			}
+
+		} while (strcmp(ReturnCode, "command1=") != 0 && strcmp(ReturnCode, "user=") != 0);
 	}
 
-}
+	printf("ReturnCode == %s\n", ReturnCode);
 
+} 
 //-------------------------------------------------------------------
 //							static な関数
 //-------------------------------------------------------------------
@@ -323,7 +333,7 @@ static int  send_cmd(const char command[], char parameter[]){
     char buf[BUF_LEN];					//サーバ返答
     char WebBuf[BUF_LEN*40];
     int s;                               /* ソケットのためのファイルディスクリプタ */
-    char send_buf[BUF_LEN];              /* サーバに送る HTTP プロトコル用バッファ */
+    char send_buf[BUF_LEN*2];              /* サーバに送る HTTP プロトコル用バッファ */
 
     static char SessionID[100];					//セッションID
     char *SessionIDstart;				//セッションID記入開始位置
@@ -491,46 +501,3 @@ static int  ReturnCode_to_ReturnNumber() {
 		return FAILURE;
 	}
 }
-
-static char* enum2strcmd(ecmd cmd) {
-	int mode;
-	int direction;
-	static char cmd_str[MAX_CMD_LEN];
-
-	mode = cmd / MAX_CMD_LEN;
-	direction = cmd % MAX_CMD_LEN;
-
-	strcpy(cmd_str, commands[mode][direction]);
-
-	return cmd_str;
-}
-
-static bool command_isnt_accepted() {
-
-	if ( getDataReturned() ) 		return false;
-	if ( allOutsideDataReturned() ) return false;
-	if ( gameEndDataReturned() ) 	return false;
-
-	return true;
-}
-
-static bool getDataReturned() {
-	if ( (ReturnCount = ReturnCode_to_ReturnNumber() ) != FAILURE) return true;
-	else return false;
-}
-
-static bool allOutsideDataReturned() {
-	if (strchr(ReturnCode, ',') != NULL) return true;
-	else return false;
-}
-
-static bool gameEndDataReturned() {
-	if (strcmp(ReturnCode, "user=") == 0) return true;
-	else return false;
-}
-
-static bool acceptedNextCmd() {
-	if (strcmp(ReturnCode, "command1=") == 0) return true;
-	else return false;
-}
-
