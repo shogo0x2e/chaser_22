@@ -197,6 +197,26 @@ void establishConnection(int argc, char *argv[], char cmp_ProxyAddress[]) {
 	printf("-----------------------\n\n");
 }
 
+void expSendCommand(const char mode[], const char cmd[]) {
+
+	if (strcmp(mode, KEY_END) != 0) {
+
+		do {
+			send_cmd(mode, cmd);
+		} while ( command_isnt_accepted() );
+	}
+	else {
+
+		do {
+			// server_keyword[smode] は "EndCommandCheck" にも置き換えられる
+			send_cmd(mode, "command3=%23");
+			if ( gameEndDataReturned() ) exit(EXIT_SUCCESS); //ゲーム終了
+
+		} while ( ! acceptedNextCmd() );
+	}
+
+} 
+
 void sendCommand(send_mode smode, ecmd cmd) {
 
 	char  buffer_cmd[SENDCMD_MAXLEN] = "";

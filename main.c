@@ -24,15 +24,18 @@ int main(int argc, char *argv[]){
 	while ( 1 ) {
 
 		/****** GetReadyの発行 ******/
-		sendCommand(SendGetready, gr_get);
+		expSendCommand(KEY_GETREADY, "command1=gr");
+		//sendCommand(SendGetready, gr_get);
 
 		/******  Actionの発行  ******/
-		sendCommand(SendAction, walk_up);
+		expSendCommand(KEY_ACTION, "command2=wu");
+		// sendCommand(SendAction, walk_up);
 
 		/******   ターン終了   ******/
+		expSendCommand(KEY_END, "command3=#");
 
 		//「 0 」の部分は意味なし, SendTurnEnd 処理時に第二引数は使用しない
-		sendCommand(SendTurnEnd, 0);
+		// sendCommand(SendTurnEnd, 0);
 	}
 
     return 0;

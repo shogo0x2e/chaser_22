@@ -5,18 +5,18 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
- 
 
-# Make data base, printed on Tue Aug 16 14:41:50 2022
+# Make data base, printed on Tue Aug 16 15:47:07 2022
 
 # Variables
 
 # automatic
+ 
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
 # environment
-WSLENV = VSCODE_WSL_EXT_LOCATION/up:VSCODE_SERVER_TAR/up
+WSLENV = VSCODE_WSL_EXT_LOCATION/up
 # makefile (from 'Makefile', line 9)
 NETOBJ1 = network
 # default
@@ -60,9 +60,7 @@ SKRURL = http://www7019ug.sakura.ne.jp:80/CHaserOnline003/user/
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-ee11363d-5ec2-4df4-a9f1-e15a68e1b2dd.sock
-# environment
-VSCODE_SERVER_TAR = /mnt/c/Users/shogo/AppData/Local/Temp/vscode-remote-wsl/da76f93349a72022ca4670c1b84860304616aaa2/vscode-server-stable-linux-x64.tar.gz
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-65bc5b21-9dcd-413e-b18c-ce8b8de1e20b.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -76,7 +74,7 @@ PWD = /mnt/c/Users/shogo/Desktop/chaser_22
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/18_interop
+WSL_INTEROP = /run/WSL/1431_interop
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
@@ -106,7 +104,7 @@ CC = gcc
 # makefile (from 'Makefile', line 8)
 NET = ./network/
 # makefile (from 'Makefile', line 15)
-USERNM = cool07
+USERNM = cool09
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -163,10 +161,8 @@ LANG = C
 TERM = xterm-256color
 # environment
 WSL_DISTRO_NAME = Ubuntu
-# environment
-MOTD_SHOWN = update-motd
 # variable set hash-table stats:
-# Load=77/1024=8%, Rehash=0, Collisions=4/116=3%
+# Load=75/1024=7%, Rehash=0, Collisions=4/114=4%
 
 # Pattern-specific Variable Values
 
@@ -174,9 +170,9 @@ MOTD_SHOWN = update-motd
 
 # Directories
 
-# . (device 46, inode 7599824371350638): 8 files, no impossibilities.
+# . (device 46, inode 7599824371350638): 9 files, no impossibilities.
 
-# 8 files, no impossibilities in 1 directories.
+# 9 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -242,14 +238,14 @@ main.c:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-16 14:41:04.9862444
+#  Last modified 2022-08-16 15:46:53.3290936
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 network/network.c:
 #  Implicit rule search has been done.
-#  Last modified 2020-05-18 10:05:49.5668092
+#  Last modified 2022-08-16 15:46:43.3760088
 #  File has been updated.
 #  Successfully updated.
 
@@ -276,14 +272,13 @@ clean:
 
 main: network.o main.o
 #  Implicit rule search has not been done.
-#  Last modified 2022-08-16 14:41:14.1247955
+#  Last modified 2022-08-16 15:46:55.1350843
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/6=0%
 #  recipe to execute (from 'Makefile', line 28):
 	$(CC) $(NETOBJ1).o main.o -o $(PROGRAM)
- 
 	rm -f *.o
 
 main.o: main.c
@@ -292,6 +287,7 @@ main.o: main.c
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 25):
 	$(CC) -c main.c
+ 
 
 # files hash-table stats:
 # Load=12/1024=1%, Rehash=0, Collisions=0/32=0%
@@ -301,12 +297,12 @@ main.o: main.c
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 19 / storage = 155 B / avg = 8 B
-# current buf: size = 8162 B / used = 155 B / count = 19 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 20 / storage = 160 B / avg = 8 B
+# current buf: size = 8162 B / used = 160 B / count = 20 / avg = 8 B
 
-# strcache performance: lookups = 39 / hit rate = 51%
+# strcache performance: lookups = 40 / hit rate = 50%
 # hash-table stats:
-# Load=19/8192=0%, Rehash=0, Collisions=1/39=3%
-# Finished Make data base on Tue Aug 16 14:41:50 2022
+# Load=20/8192=0%, Rehash=0, Collisions=1/40=2%
+# Finished Make data base on Tue Aug 16 15:47:07 2022
 
  

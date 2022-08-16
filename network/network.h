@@ -16,6 +16,10 @@
 #define PROXY ""
 #endif
 
+#define KEY_GETREADY "GetReadyCheck"
+#define KEY_ACTION   "CommandCheck"
+#define KEY_END      "EndCommandCheck"
+
 typedef enum  send_mode_ {
     SendGetready,
     SendAction,
@@ -26,3 +30,5 @@ int  retDataCount();
 void copyRawgr(int copyTo[]);
 void establishConnection(int argc, char* argv[], char proxyAddress[]);
 void sendCommand(send_mode smode, ecmd cmd);
+
+void expSendCommand(const char mode[], const char cmd[]);
