@@ -39,29 +39,6 @@ int  ReturnNumber[GR_ARR_SIZE];		//サーバーからの返り値 int バージ�
 
 int  ReturnCount;					// サーバからの返り値の個数
 
-// 要素数指定しないとコンパイルできない
-const char *commands[9][MAX_CMD_LEN] = {
-	//get_ready      (GetReadyMove)
-	{ "gr", "gru", "grr", "grd", "grl" },
-	//act_walk       (walk系)
-	{ "wu", "wr", "wd", "wl" },
-	//act_search     (put & search系)
-	{ "pu3su", "pr3sr", "pd3sd", "pl3sl" },
-	//act_look       (put & look)
-	{ "pu3lu", "pr3lr", "pd3ld", "pl3ll" },
-	//act_putwalk    (put & walk)
-	{ "pu2wd", "pr2wl", "pd2wu", "pl2wr", "pru2wld", "prd2wlu", "pld2wru", "plu2wrd" },
-	//act_keima      (kei系)
-	{ "keiru", "keird", "keild", "keilu" },
-	//act_break      (put系)
-	{ "pu0", "pr0", "pd0", "pl0" },
-	//act_break_walk (砕く動作)
-	{ "pu0wd", "pr0wl", "pd0wu", "pl0wr", "pru0wld", "prd0wlu", "pld0wru", "prd0wlu" },
-	//act_dig        (dig系)
-	{ "du", "dr", "dd", "dl", "dru", "drd", "dlu", "dld" }
-};
-
-
 //-------------------------------------------------------------------
 //					static な関数のプロトタイプ宣言
 //-------------------------------------------------------------------
