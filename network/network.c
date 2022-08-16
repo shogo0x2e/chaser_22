@@ -60,11 +60,6 @@ static int   send_cmd(const char[], char[]);
 static int   ReturnCode_to_ReturnNumber();
 static char* enum2strcmd(ecmd cmd);
 
-static bool command_isnt_accepted();
-static bool getDataReturned();
-static bool allOutsideDataReturned();
-static bool gameEndDataReturned();
-static bool acceptedNextCmd();
 
 //*******************************************************************
 //                             関数定義
@@ -199,55 +194,39 @@ void establishConnection(int argc, char *argv[], char cmp_ProxyAddress[]) {
 
 void expSendCommand(const char mode[], const char cmd[]) {
 
+	// 同じコマンドを繰り返し送った回数
+	int repeat = 0;
+	// commandX=YY の X の数値
+	int key_num;
+	// サーバ文字列のバッファ
+	char buf_cmd[MAX_KEYWORD];
+
+	if      (strcmp(mode, KEY_GETREADY) == 0) key_num = 1;
+	else if (strcmp(mode, KEY_ACTION)   == 0) key_num = 2;
+	else if (strcmp(mode, KEY_END)      == 0) key_num = 3;
+
 	if (strcmp(mode, KEY_END) != 0) {
 
+		sprintf(buf_cmd, "command%d=%s", key_num, cmd);
+
 		do {
-			send_cmd(mode, cmd);
-		} while ( command_isnt_accepted() );
+			send_cmd(mode, buf_cmd);
+		} while (strchr(ReturnCode, ',') == NULL && strcmp(ReturnCode, "user=") != 0);
 	}
 	else {
 
 		do {
 			// server_keyword[smode] は "EndCommandCheck" にも置き換えられる
 			send_cmd(mode, "command3=%23");
-			if ( gameEndDataReturned() ) exit(EXIT_SUCCESS); //ゲーム終了
 
-		} while ( ! acceptedNextCmd() );
+			if (strcmp(ReturnCode, "user=") == 0 || repeat++ > 5) {
+				exit(EXIT_SUCCESS); //ゲーム終了
+			}
+
+		} while (strcmp(ReturnCode, "command1=") != 0 && strcmp(ReturnCode, "user=") != 0);
 	}
 
 } 
-
-void sendCommand(send_mode smode, ecmd cmd) {
-
-	char  buffer_cmd[SENDCMD_MAXLEN] = "";
-
-	const char *server_keyword[] = {
-		"GetReadyCheck",
-		"CommandCheck",
-		"EndCommandCheck"
-	};
-
-	if (smode != SendTurnEnd) {
-
-		// smode + 1 ... commandN= の N は 1 から数えるため
-		sprintf(buffer_cmd, "command%d=%s", smode + 1, enum2strcmd(cmd));
-
-		do {
-			send_cmd(server_keyword[smode], buffer_cmd);
-		} while ( command_isnt_accepted() );
-	}
-	else {
-
-		do {
-			// server_keyword[smode] は "EndCommandCheck" にも置き換えられる
-			send_cmd(server_keyword[smode], "command3=%23");
-			if ( gameEndDataReturned() ) exit(EXIT_SUCCESS); //ゲーム終了
-
-		} while ( ! acceptedNextCmd() );
-	}
-
-}
-
 //-------------------------------------------------------------------
 //							static な関数
 //-------------------------------------------------------------------
@@ -523,34 +502,5 @@ static char* enum2strcmd(ecmd cmd) {
 	strcpy(cmd_str, commands[mode][direction]);
 
 	return cmd_str;
-}
-
-static bool command_isnt_accepted() {
-
-	if ( getDataReturned() ) 		return false;
-	if ( allOutsideDataReturned() ) return false;
-	if ( gameEndDataReturned() ) 	return false;
-
-	return true;
-}
-
-static bool getDataReturned() {
-	if ( (ReturnCount = ReturnCode_to_ReturnNumber() ) != FAILURE) return true;
-	else return false;
-}
-
-static bool allOutsideDataReturned() {
-	if (strchr(ReturnCode, ',') != NULL) return true;
-	else return false;
-}
-
-static bool gameEndDataReturned() {
-	if (strcmp(ReturnCode, "user=") == 0) return true;
-	else return false;
-}
-
-static bool acceptedNextCmd() {
-	if (strcmp(ReturnCode, "command1=") == 0) return true;
-	else return false;
 }
 

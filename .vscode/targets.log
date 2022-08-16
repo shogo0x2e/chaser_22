@@ -6,12 +6,11 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Aug 16 15:47:07 2022
+# Make data base, printed on Tue Aug 16 16:02:43 2022
 
 # Variables
 
 # automatic
- 
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
@@ -32,7 +31,7 @@ CURDIR := /mnt/c/Users/shogo/Desktop/chaser_22
 # makefile
 SHELL = /bin/sh
 # makefile (from 'Makefile', line 17)
-ROOM = 4006
+ROOM = 4007
 # environment
 VSCODE_NLS_CONFIG = {"locale":"ja","availableLanguages":{}}
 # environment
@@ -104,7 +103,7 @@ CC = gcc
 # makefile (from 'Makefile', line 8)
 NET = ./network/
 # makefile (from 'Makefile', line 15)
-USERNM = cool09
+USERNM = cool92
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -238,14 +237,14 @@ main.c:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-16 15:46:53.3290936
+#  Last modified 2022-08-16 16:01:32.0519862
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 network/network.c:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-16 15:46:43.3760088
+#  Last modified 2022-08-16 16:01:24.0519906
 #  File has been updated.
 #  Successfully updated.
 
@@ -272,7 +271,7 @@ clean:
 
 main: network.o main.o
 #  Implicit rule search has not been done.
-#  Last modified 2022-08-16 15:46:55.1350843
+#  Last modified 2022-08-16 16:01:33.6845312
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
@@ -287,7 +286,6 @@ main.o: main.c
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 25):
 	$(CC) -c main.c
- 
 
 # files hash-table stats:
 # Load=12/1024=1%, Rehash=0, Collisions=0/32=0%
@@ -303,6 +301,6 @@ main.o: main.c
 # strcache performance: lookups = 40 / hit rate = 50%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=1/40=2%
-# Finished Make data base on Tue Aug 16 15:47:07 2022
+# Finished Make data base on Tue Aug 16 16:02:43 2022
 
  
