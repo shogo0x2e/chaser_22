@@ -1,7 +1,8 @@
 CC      = gcc
+CC_ARGS = -I ./include/
 
 CPPC    = g++
-ARGS    = -std=c++17 -Wall --pedantic-errors
+ARGS    = -std=c++17 -Wall --pedantic-errors -I ./include/
 
 PROGRAM = main
 
@@ -19,21 +20,21 @@ ROOM    = 4008
 all: $(PROGRAM)
 
 $(NETOBJ1).o: $(NET)$(NETOBJ1).c
-	$(CC) -c $(NET)$(NETOBJ1).c
+	$(CC) $(CC_ARGS) -c $(NET)$(NETOBJ1).c
 
 main.o: main.c
-	$(CC) -c main.c
+	$(CC) $(CC_ARGS) -c main.c
 
 $(PROGRAM): $(NETOBJ1).o main.o
-	$(CC) $(NETOBJ1).o main.o -o $(PROGRAM)
-	rm -f *.o
+	$(CC) $(NETOBJ1).o main.o -o ./bin/$(PROGRAM)
+	rm -f ./bin/*.o
 
 run: $(PROGRAM)
-	./$(PROGRAM) $(URL) -u $(USERNM) -p $(PASSWD) -r $(ROOM)
+	./bin/$(PROGRAM) $(URL) -u $(USERNM) -p $(PASSWD) -r $(ROOM)
 
 skrun: $(PROGRAM)
-	./$(PROGRAM) $(SKRURL) -u $(USERNM) -p $(PASSWD) -r $(ROOM)
+	./bin/$(PROGRAM) $(SKRURL) -u $(USERNM) -p $(PASSWD) -r $(ROOM)
 
 clean:
-	rm -f *.o
-	rm -f main
+	rm -f ./bin/*.o
+	rm -f ./bin/main

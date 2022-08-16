@@ -1,9 +1,8 @@
 make --dry-run --keep-going --print-directory
-make: Entering directory '/mnt/c/Users/shogo/Desktop/chaser_22'
-gcc -c ./network/network.c
- 
-gcc -c main.c
-gcc network.o main.o -o main
-rm -f *.o
-make: Leaving directory '/mnt/c/Users/shogo/Desktop/chaser_22'
+make: Entering directory '/home/shogo/prog/chaser_22'
+gcc -I ./include/ -c ./network/network.c
+gcc -I ./include/ -c main.c
+gcc network.o main.o -o ./bin/main
+rm -f ./bin/*.o
+make: Leaving directory '/home/shogo/prog/chaser_22'
  

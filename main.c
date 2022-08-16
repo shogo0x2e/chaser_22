@@ -2,7 +2,7 @@
 //	./CHaserOnlineClient009-2Proxy.o ターゲットurl [-x プロキシアドレス:プロキシポート -u ユーザID -p パスワード -r ルーム番号]
 //	パラメータの順番、有無は任意でよい
 
-#include "network/network.h"
+#include "network.h"
 
 //*******************************************************************
 //							main 関数
