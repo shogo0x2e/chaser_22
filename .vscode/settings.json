@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "typeinfo": "cpp",
+        "cstdlib": "cpp",
+        "chrono": "cpp",
+        "string_view": "cpp",
+    }
+}
