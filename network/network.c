@@ -20,6 +20,8 @@
 #include <sys/uio.h>
 #include <unistd.h>
 
+#define FAILURE -1	// ReturnCode_to_ReturnNumber() の異常系
+
 #define BUF_LEN     512                  /* バッファのサイズ */
 #define MAX_KEYWORD	30					 /*キーワードの最大数*/
 
@@ -56,10 +58,19 @@ int  retDataCount() {
 }
 
 void copyRawgr(int copyTo[]) {
+
 	int i = 0;
 
-	for (i = 0; i < GR_ARR_SIZE; i++) {
-		copyTo[i] = ReturnNumber[i];
+	// 変換に失敗したら
+	if (ReturnCode_to_ReturnNumber() == FAILURE) {
+
+		return;
+	}
+	else {
+		
+		for (i = 0; i < GR_ARR_SIZE; i++) {
+			copyTo[i] = ReturnNumber[i];
+		}
 	}
 }
 

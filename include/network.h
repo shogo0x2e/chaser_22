@@ -7,12 +7,7 @@
 //     備考: CHaserOnlineのサンプルプログラムより
 //*********************************************
 
-// 関数動作の正常・異常を判断する際に使用
-#define SUCCESS  -1
-#define FAILURE  -2
-
-#define MAP_SIZE        61          // 構造体 map_datas における一列の要素数
-#define GR_ARR_SIZE     9           // GetReady に用いる配列の要素数
+#define GR_ARR_SIZE      9
 #define MAX_CMD_LEN     10          // サーバに送信する最長の String 型コマンド
 #define SENDCMD_MAXLEN  20          // サーバに送信する 「commandN=」を含めた最長コマンド
                                     // 必要数 17 「commandN=pru0wld」

@@ -26,15 +26,15 @@ main.o: main.c
 	$(CC) $(CC_ARGS) -c main.c
 
 $(PROGRAM): $(NETOBJ1).o main.o
-	$(CC) $(NETOBJ1).o main.o -o ./bin/$(PROGRAM)
-	rm -f ./bin/*.o
+	$(CC) $(NETOBJ1).o main.o -o $(PROGRAM)
+	rm -f *.o
 
 run: $(PROGRAM)
-	./bin/$(PROGRAM) $(URL) -u $(USERNM) -p $(PASSWD) -r $(ROOM)
+	$(PROGRAM) $(URL) -u $(USERNM) -p $(PASSWD) -r $(ROOM)
 
 skrun: $(PROGRAM)
-	./bin/$(PROGRAM) $(SKRURL) -u $(USERNM) -p $(PASSWD) -r $(ROOM)
+	$(PROGRAM) $(SKRURL) -u $(USERNM) -p $(PASSWD) -r $(ROOM)
 
 clean:
-	rm -f ./bin/*.o
-	rm -f ./bin/main
+	rm -f *.o
+	rm -f main
